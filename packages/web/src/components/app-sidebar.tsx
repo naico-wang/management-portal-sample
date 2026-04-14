@@ -1,4 +1,5 @@
-import { NavLink, useLocation } from "react-router-dom"
+import { startTransition } from "react"
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
 
 import {
   Collapsible,
@@ -26,9 +27,21 @@ import { ChevronRightIcon } from "lucide-react"
 import { useAuth } from "@/features/auth/model/auth-context"
 import { sidebarSections, sidebarTeams } from "@/router/route-config"
 
+function isPathActive(currentPath: string, itemPath: string) {
+  return currentPath === itemPath || currentPath.startsWith(`${itemPath}/`)
+}
+
 export function AppSidebar() {
   const location = useLocation()
-  const { user } = useAuth()
+  const navigate = useNavigate()
+  const { logout, user } = useAuth()
+
+  function handleLogout() {
+    logout()
+    startTransition(() => {
+      navigate("/login", { replace: true })
+    })
+  }
 
   return (
     <Sidebar collapsible="icon">
@@ -40,10 +53,7 @@ export function AppSidebar() {
           {sidebarSections.map((section) => {
             const Icon = section.icon
             const isSectionActive = section.items.some(
-              (item) =>
-                location.pathname === item.path ||
-                (item.path !== "/dashboard" &&
-                  location.pathname.startsWith(`${item.path}/`))
+              (item) => isPathActive(location.pathname, item.path)
             )
 
             return (
@@ -64,10 +74,7 @@ export function AppSidebar() {
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       {section.items.map((item) => {
-                        const isActive =
-                          location.pathname === item.path ||
-                          (item.path !== "/dashboard" &&
-                            location.pathname.startsWith(`${item.path}/`))
+                        const isActive = isPathActive(location.pathname, item.path)
 
                         return (
                           <SidebarMenuSubItem key={item.path}>
@@ -97,6 +104,7 @@ export function AppSidebar() {
         <Separator />
         {user ? (
           <NavUser
+            onLogout={handleLogout}
             user={{
               name: user.name,
               email: user.email,

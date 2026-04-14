@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom"
 import { cn } from "@workspace/ui/lib/utils"
 
 const items = [
-  { to: "/settings", label: "General", end: true },
+  { to: "/settings/general", label: "General" },
   { to: "/settings/environment", label: "Environment" },
   { to: "/settings/notifications", label: "Notifications" },
   { to: "/settings/limits", label: "Limits" },

@@ -17,18 +17,21 @@ import { Input } from "@workspace/ui/components/input"
 
 export function LoginForm({
   className,
+  onGoogleLogin,
   onLogin,
   ...props
 }: React.ComponentProps<"div"> & {
+  onGoogleLogin?: () => void
   onLogin?: () => void
 }) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Sign in to Management Portal</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Use your work account to access operations, users, and system
+            settings.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -44,7 +47,7 @@ export function LoginForm({
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="user@lululemon.com"
                   required
                 />
               </Field>
@@ -62,11 +65,15 @@ export function LoginForm({
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
-                <Button variant="outline" type="button">
-                  Login with Google
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => onGoogleLogin?.()}
+                >
+                  Continue with SSO
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
+                  Need access? <a href="#">Contact your administrator</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

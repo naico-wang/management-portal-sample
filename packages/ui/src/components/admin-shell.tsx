@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { Fragment, type ReactNode } from "react"
 
 import {
   Breadcrumb,
@@ -53,28 +53,34 @@ export function AdminShell({
               <BreadcrumbList className="min-w-0 flex-nowrap">
                 {items.map((item, index) => {
                   const isLast = index === items.length - 1
+                  const itemClassName = !isLast
+                    ? "hidden min-w-0 md:inline-flex"
+                    : "min-w-0"
 
                   return (
-                    <BreadcrumbItem
-                      key={`${item.label}-${index}`}
-                      className={!isLast ? "hidden min-w-0 md:inline-flex" : "min-w-0"}
-                    >
-                      {isLast ? (
-                        <BreadcrumbPage className="truncate">
-                          {item.label}
-                        </BreadcrumbPage>
-                      ) : (
-                        <>
+                    <Fragment key={`${item.label}-${index}`}>
+                      <BreadcrumbItem
+                        className={itemClassName}
+                      >
+                        {isLast ? (
+                          <BreadcrumbPage className="truncate">
+                            {item.label}
+                          </BreadcrumbPage>
+                        ) : (
                           <BreadcrumbLink
                             href={item.href ?? "#"}
                             className="max-w-[14rem] truncate"
                           >
                             {item.label}
                           </BreadcrumbLink>
-                          <BreadcrumbSeparator className="hidden shrink-0 md:block" />
-                        </>
-                      )}
-                    </BreadcrumbItem>
+                        )}
+                      </BreadcrumbItem>
+                      {!isLast ? (
+                        <BreadcrumbSeparator
+                          className="hidden shrink-0 md:block"
+                        />
+                      ) : null}
+                    </Fragment>
                   )
                 })}
               </BreadcrumbList>

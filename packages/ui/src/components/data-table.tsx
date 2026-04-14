@@ -328,8 +328,12 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
 
 export function DataTable({
   data: initialData,
+  isLoading = false,
+  toolbarContent,
 }: {
   data: z.infer<typeof schema>[]
+  isLoading?: boolean
+  toolbarContent?: React.ReactNode
 }) {
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})
@@ -354,6 +358,15 @@ export function DataTable({
     () => data?.map(({ id }) => id) || [],
     [data]
   )
+
+  React.useEffect(() => {
+    setData(initialData)
+    setPagination((current) => ({
+      ...current,
+      pageIndex: 0,
+    }))
+    setRowSelection({})
+  }, [initialData])
 
   const table = useReactTable({
     data,
@@ -396,38 +409,47 @@ export function DataTable({
       defaultValue="outline"
       className="w-full flex-col justify-start gap-6"
     >
-      <div className="flex items-center justify-between px-4 lg:px-6">
-        <Label htmlFor="view-selector" className="sr-only">
-          View
-        </Label>
-        <Select defaultValue="outline">
-          <SelectTrigger
-            className="flex w-fit @4xl/main:hidden"
-            size="sm"
-            id="view-selector"
-          >
-            <SelectValue placeholder="Select a view" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="outline">Outline</SelectItem>
-              <SelectItem value="past-performance">Past Performance</SelectItem>
-              <SelectItem value="key-personnel">Key Personnel</SelectItem>
-              <SelectItem value="focus-documents">Focus Documents</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
-          <TabsTrigger value="outline">Outline</TabsTrigger>
-          <TabsTrigger value="past-performance">
-            Past Performance <Badge variant="secondary">3</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="key-personnel">
-            Key Personnel <Badge variant="secondary">2</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
-        </TabsList>
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-4 px-4 lg:px-6 xl:flex-row xl:items-start xl:justify-between">
+        <div className="flex min-w-0 flex-col gap-3">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            <Label htmlFor="view-selector" className="sr-only">
+              View
+            </Label>
+            <Select defaultValue="outline">
+              <SelectTrigger
+                className="flex w-fit @4xl/main:hidden"
+                size="sm"
+                id="view-selector"
+              >
+                <SelectValue placeholder="Select a view" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="outline">Outline</SelectItem>
+                  <SelectItem value="past-performance">Past Performance</SelectItem>
+                  <SelectItem value="key-personnel">Key Personnel</SelectItem>
+                  <SelectItem value="focus-documents">Focus Documents</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
+              <TabsTrigger value="outline">Outline</TabsTrigger>
+              <TabsTrigger value="past-performance">
+                Past Performance <Badge variant="secondary">3</Badge>
+              </TabsTrigger>
+              <TabsTrigger value="key-personnel">
+                Key Personnel <Badge variant="secondary">2</Badge>
+              </TabsTrigger>
+              <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
+            </TabsList>
+          </div>
+          {toolbarContent ? (
+            <div className="flex flex-wrap items-center gap-2">
+              {toolbarContent}
+            </div>
+          ) : null}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
@@ -471,7 +493,15 @@ export function DataTable({
         value="outline"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
-        <div className="overflow-hidden rounded-lg border">
+        <div className="relative overflow-hidden rounded-lg border">
+          {isLoading ? (
+            <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/35 backdrop-blur-[2px]">
+              <div className="bg-background/95 flex items-center gap-2 rounded-full border px-4 py-2 text-sm text-muted-foreground shadow-lg">
+                <LoaderIcon className="size-4 animate-spin" />
+                Updating results...
+              </div>
+            </div>
+          ) : null}
           <DndContext
             collisionDetection={closestCenter}
             modifiers={[restrictToVerticalAxis]}

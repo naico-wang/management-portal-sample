@@ -1,10 +1,7 @@
 import type { LucideIcon } from "lucide-react"
 import {
-  AudioLinesIcon,
   BarChart3Icon,
-  GalleryVerticalEndIcon,
   Settings2Icon,
-  TerminalIcon,
   UsersIcon,
 } from "lucide-react"
 
@@ -22,16 +19,22 @@ type RouteMeta = {
 
 export const routeConfig = {
   dashboard: {
-    path: "/dashboard",
+    path: "/home/dashboard",
     title: "Dashboard",
     breadcrumb: "Dashboard",
     permission: APP_PERMISSIONS.dashboardView,
   },
+  dataTable: {
+    path: "/home/data-table",
+    title: "Data Table",
+    breadcrumb: "Data Table",
+    permission: APP_PERMISSIONS.dashboardView,
+  },
   users: {
-    index: {
-      path: "/users",
-      title: "Users",
-      breadcrumb: "Users",
+    directory: {
+      path: "/users/directory",
+      title: "User Directory",
+      breadcrumb: "Directory",
       permission: APP_PERMISSIONS.usersView,
     },
     roles: {
@@ -48,10 +51,10 @@ export const routeConfig = {
     },
   },
   settings: {
-    index: {
-      path: "/settings",
-      title: "Settings",
-      breadcrumb: "Settings",
+    general: {
+      path: "/settings/general",
+      title: "General Settings",
+      breadcrumb: "General",
       permission: APP_PERMISSIONS.settingsView,
     },
     environment: {
@@ -75,8 +78,9 @@ export const routeConfig = {
   },
 } as const satisfies {
   dashboard: RouteMeta
-  users: Record<"index" | "roles" | "auditTrail", RouteMeta>
-  settings: Record<"index" | "environment" | "notifications" | "limits", RouteMeta>
+  dataTable: RouteMeta
+  users: Record<"directory" | "roles" | "auditTrail", RouteMeta>
+  settings: Record<"general" | "environment" | "notifications" | "limits", RouteMeta>
 }
 
 export type SidebarSection = {
@@ -89,13 +93,13 @@ export const sidebarSections: SidebarSection[] = [
   {
     label: "Operations",
     icon: BarChart3Icon,
-    items: [routeConfig.dashboard],
+    items: [routeConfig.dashboard, routeConfig.dataTable],
   },
   {
     label: "Access Control",
     icon: UsersIcon,
     items: [
-      routeConfig.users.index,
+      routeConfig.users.directory,
       routeConfig.users.roles,
       routeConfig.users.auditTrail,
     ],
@@ -104,7 +108,7 @@ export const sidebarSections: SidebarSection[] = [
     label: "Configuration",
     icon: Settings2Icon,
     items: [
-      routeConfig.settings.index,
+      routeConfig.settings.general,
       routeConfig.settings.environment,
       routeConfig.settings.notifications,
       routeConfig.settings.limits,
@@ -115,17 +119,17 @@ export const sidebarSections: SidebarSection[] = [
 export const sidebarTeams = [
   {
     name: "Lululemon Ops",
-    logo: <GalleryVerticalEndIcon />,
+    logo: <img src="/logo.svg" alt="Lululemon Ops" className="size-5" />,
     plan: "Enterprise",
   },
   {
     name: "Regional Admin",
-    logo: <AudioLinesIcon />,
+    logo: <img src="/logo.svg" alt="Regional Admin" className="size-5" />,
     plan: "Business",
   },
   {
     name: "Platform Team",
-    logo: <TerminalIcon />,
+    logo: <img src="/logo.svg" alt="Platform Team" className="size-5" />,
     plan: "Internal",
   },
 ] as const

@@ -8,6 +8,7 @@ import {
   RequirePermissionGuard,
 } from "@/router/guards/auth-guards"
 import { routeConfig } from "@/router/route-config"
+import { DataTableDemoPage } from "@/features/admin/pages/data-table-demo-page"
 import { DashboardPage } from "@/features/admin/pages/dashboard-page"
 import { LoginPage } from "@/features/auth/pages/login-page"
 import { SettingsSectionLayout } from "@/features/settings/layouts/settings-section-layout"
@@ -63,35 +64,39 @@ export const router = createBrowserRouter([
             ),
             children: [
               {
-                path: "dashboard",
+                path: "home/dashboard",
                 element: <DashboardPage />,
                 handle: routeConfig.dashboard,
+              },
+              {
+                path: "home/data-table",
+                element: <DataTableDemoPage />,
+                handle: routeConfig.dataTable,
               },
             ],
           },
           {
             element: (
               <RequirePermissionGuard
-                permission={routeConfig.users.index.permission}
+                permission={routeConfig.users.directory.permission}
               />
             ),
             children: [
               {
-                path: "users",
                 element: <UsersSectionLayout />,
-                handle: routeConfig.users.index,
                 children: [
                   {
-                    index: true,
+                    path: "users/directory",
                     element: <UsersDirectoryPage />,
+                    handle: routeConfig.users.directory,
                   },
                   {
-                    path: "roles",
+                    path: "users/roles",
                     element: <RolesPage />,
                     handle: routeConfig.users.roles,
                   },
                   {
-                    path: "audit-trail",
+                    path: "users/audit-trail",
                     element: <AuditTrailPage />,
                     handle: routeConfig.users.auditTrail,
                   },
@@ -102,31 +107,30 @@ export const router = createBrowserRouter([
           {
             element: (
               <RequirePermissionGuard
-                permission={routeConfig.settings.index.permission}
+                permission={routeConfig.settings.general.permission}
               />
             ),
             children: [
               {
-                path: "settings",
                 element: <SettingsSectionLayout />,
-                handle: routeConfig.settings.index,
                 children: [
                   {
-                    index: true,
+                    path: "settings/general",
                     element: <SettingsGeneralPage />,
+                    handle: routeConfig.settings.general,
                   },
                   {
-                    path: "environment",
+                    path: "settings/environment",
                     element: <EnvironmentPage />,
                     handle: routeConfig.settings.environment,
                   },
                   {
-                    path: "notifications",
+                    path: "settings/notifications",
                     element: <NotificationsPage />,
                     handle: routeConfig.settings.notifications,
                   },
                   {
-                    path: "limits",
+                    path: "settings/limits",
                     element: <LimitsPage />,
                     handle: routeConfig.settings.limits,
                   },

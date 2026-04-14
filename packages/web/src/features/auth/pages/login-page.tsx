@@ -20,6 +20,12 @@ export function LoginPage() {
 
   return (
     <LoginForm
+      onGoogleLogin={() => {
+        login("admin@management-portal.local")
+        startTransition(() => {
+          navigate(routeConfig.dashboard.path, { replace: true })
+        })
+      }}
       onLogin={() => {
         login("admin@management-portal.local")
         startTransition(() => {

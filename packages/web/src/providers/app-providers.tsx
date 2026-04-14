@@ -11,7 +11,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
       <AuthProvider>
         <TooltipProvider>
           {children}
-          <Toaster position="top-right" richColors />
+          <Toaster
+            position="top-center"
+            richColors
+          />
         </TooltipProvider>
       </AuthProvider>
     </ThemeProvider>

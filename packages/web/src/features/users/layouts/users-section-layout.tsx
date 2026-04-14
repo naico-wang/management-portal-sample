@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom"
 import { cn } from "@workspace/ui/lib/utils"
 
 const items = [
-  { to: "/users", label: "Directory", end: true },
+  { to: "/users/directory", label: "Directory" },
   { to: "/users/roles", label: "Roles" },
   { to: "/users/audit-trail", label: "Audit Trail" },
 ] as const
