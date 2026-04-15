@@ -87,10 +87,21 @@ import {
 import {
   Tabs,
   TabsContent,
-  TabsList,
-  TabsTrigger,
 } from "@workspace/ui/components/tabs"
-import { GripVerticalIcon, CircleCheckIcon, LoaderIcon, EllipsisVerticalIcon, Columns3Icon, ChevronDownIcon, PlusIcon, ChevronsLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronsRightIcon, TrendingUpIcon } from "lucide-react"
+import {
+  GripVerticalIcon,
+  CircleCheckIcon,
+  LoaderIcon,
+  EllipsisVerticalIcon,
+  Columns3Icon,
+  ChevronDownIcon,
+  PlusIcon,
+  ChevronsLeftIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsRightIcon,
+  TrendingUpIcon,
+} from "lucide-react"
 
 export const schema = z.object({
   id: z.number(),
@@ -181,8 +192,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         {row.original.status === "Done" ? (
           <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
         ) : (
-          <LoaderIcon
-          />
+          <LoaderIcon />
         )}
         {row.original.status}
       </Badge>
@@ -190,7 +200,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "target",
-    header: () => <div className="w-full text-right">Target</div>,
+    header: () => <div className="w-full">Target</div>,
     cell: ({ row }) => (
       <form
         onSubmit={(e) => {
@@ -206,7 +216,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           Target
         </Label>
         <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
+          className="h-8 w-16 border-transparent bg-transparent shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
           defaultValue={row.original.target}
           id={`${row.original.id}-target`}
         />
@@ -215,7 +225,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "limit",
-    header: () => <div className="w-full text-right">Limit</div>,
+    header: () => <div className="w-full">Limit</div>,
     cell: ({ row }) => (
       <form
         onSubmit={(e) => {
@@ -231,7 +241,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           Limit
         </Label>
         <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
+          className="h-8 w-16 border-transparent bg-transparent shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
           defaultValue={row.original.limit}
           id={`${row.original.id}-limit`}
         />
@@ -284,8 +294,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
             className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
             size="icon"
           >
-            <EllipsisVerticalIcon
-            />
+            <EllipsisVerticalIcon />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
@@ -410,83 +419,12 @@ export function DataTable({
       className="w-full flex-col justify-start gap-6"
     >
       <div className="flex flex-col gap-4 px-4 lg:px-6 xl:flex-row xl:items-start xl:justify-between">
-        <div className="flex min-w-0 flex-col gap-3">
-          <div className="flex min-w-0 flex-wrap items-center gap-2">
-            <Label htmlFor="view-selector" className="sr-only">
-              View
-            </Label>
-            <Select defaultValue="outline">
-              <SelectTrigger
-                className="flex w-fit @4xl/main:hidden"
-                size="sm"
-                id="view-selector"
-              >
-                <SelectValue placeholder="Select a view" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="outline">Outline</SelectItem>
-                  <SelectItem value="past-performance">Past Performance</SelectItem>
-                  <SelectItem value="key-personnel">Key Personnel</SelectItem>
-                  <SelectItem value="focus-documents">Focus Documents</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
-              <TabsTrigger value="outline">Outline</TabsTrigger>
-              <TabsTrigger value="past-performance">
-                Past Performance <Badge variant="secondary">3</Badge>
-              </TabsTrigger>
-              <TabsTrigger value="key-personnel">
-                Key Personnel <Badge variant="secondary">2</Badge>
-              </TabsTrigger>
-              <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
-            </TabsList>
-          </div>
+        <div className="min-w-0 flex-1">
           {toolbarContent ? (
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex w-full flex-1 flex-col gap-2">
               {toolbarContent}
             </div>
           ) : null}
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Columns3Icon data-icon="inline-start" />
-                Columns
-                <ChevronDownIcon data-icon="inline-end" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-32">
-              {table
-                .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide()
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button variant="outline" size="sm">
-            <PlusIcon
-            />
-            <span className="hidden lg:inline">Add Section</span>
-          </Button>
         </div>
       </div>
       <TabsContent
@@ -496,7 +434,7 @@ export function DataTable({
         <div className="relative overflow-hidden rounded-lg border">
           {isLoading ? (
             <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/35 backdrop-blur-[2px]">
-              <div className="bg-background/95 flex items-center gap-2 rounded-full border px-4 py-2 text-sm text-muted-foreground shadow-lg">
+              <div className="flex items-center gap-2 rounded-full border bg-background/95 px-4 py-2 text-sm text-muted-foreground shadow-lg">
                 <LoaderIcon className="size-4 animate-spin" />
                 Updating results...
               </div>
@@ -552,10 +490,48 @@ export function DataTable({
             </Table>
           </DndContext>
         </div>
-        <div className="flex items-center justify-between px-4">
-          <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+        <div className="flex items-center justify-between gap-4 px-4">
+          <div className="hidden flex-1 items-center gap-3 text-sm text-muted-foreground lg:flex">
+            <span>
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
+            </span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Columns3Icon data-icon="inline-start" />
+                  Columns
+                  <ChevronDownIcon data-icon="inline-end" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-32">
+                {table
+                  .getAllColumns()
+                  .filter(
+                    (column) =>
+                      typeof column.accessorFn !== "undefined" &&
+                      column.getCanHide()
+                  )
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    )
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button variant="outline" size="sm">
+              <PlusIcon />
+              <span className="hidden lg:inline">Add Section</span>
+            </Button>
           </div>
           <div className="flex w-full items-center gap-8 lg:w-fit">
             <div className="hidden items-center gap-2 lg:flex">
@@ -596,8 +572,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to first page</span>
-                <ChevronsLeftIcon
-                />
+                <ChevronsLeftIcon />
               </Button>
               <Button
                 variant="outline"
@@ -607,8 +582,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to previous page</span>
-                <ChevronLeftIcon
-                />
+                <ChevronLeftIcon />
               </Button>
               <Button
                 variant="outline"
@@ -618,8 +592,7 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to next page</span>
-                <ChevronRightIcon
-                />
+                <ChevronRightIcon />
               </Button>
               <Button
                 variant="outline"
@@ -629,8 +602,7 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to last page</span>
-                <ChevronsRightIcon
-                />
+                <ChevronsRightIcon />
               </Button>
             </div>
           </div>

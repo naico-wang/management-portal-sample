@@ -44,7 +44,7 @@ export function TeamSwitcher({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="bg-background flex aspect-square size-8 items-center justify-center rounded-lg border">
+              <div className="flex aspect-square size-8 items-center justify-center">
                 {activeTeam.logo}
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -69,7 +69,7 @@ export function TeamSwitcher({
                 onClick={() => setActiveTeam(team)}
                 className="gap-2 p-2"
               >
-                <div className="bg-background flex size-6 items-center justify-center rounded-md border">
+                <div className="flex size-6 items-center justify-center">
                   {team.logo}
                 </div>
                 {team.name}

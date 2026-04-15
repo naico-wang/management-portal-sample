@@ -42,7 +42,7 @@ export function AdminShell({
     <SidebarProvider>
       {sidebar}
       <SidebarInset>
-        <header className="bg-background/95 sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between gap-4 border-b px-4 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/80">
           <div className="flex min-w-0 items-center gap-3">
             <SidebarTrigger className="-ml-1" />
             <Separator
@@ -59,9 +59,7 @@ export function AdminShell({
 
                   return (
                     <Fragment key={`${item.label}-${index}`}>
-                      <BreadcrumbItem
-                        className={itemClassName}
-                      >
+                      <BreadcrumbItem className={itemClassName}>
                         {isLast ? (
                           <BreadcrumbPage className="truncate">
                             {item.label}
@@ -76,9 +74,7 @@ export function AdminShell({
                         )}
                       </BreadcrumbItem>
                       {!isLast ? (
-                        <BreadcrumbSeparator
-                          className="hidden shrink-0 md:block"
-                        />
+                        <BreadcrumbSeparator className="hidden shrink-0 md:block" />
                       ) : null}
                     </Fragment>
                   )
@@ -86,7 +82,9 @@ export function AdminShell({
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          {actions ? <div className="flex items-center gap-3">{actions}</div> : null}
+          {actions ? (
+            <div className="flex items-center gap-3">{actions}</div>
+          ) : null}
         </header>
         <section className="flex-1 p-4 md:p-6">{children}</section>
       </SidebarInset>

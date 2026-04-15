@@ -1,22 +1,23 @@
-import { useDeferredValue, useMemo, useState } from "react"
-
-import { Badge } from "@workspace/ui/components/badge"
-import { Button } from "@workspace/ui/components/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card"
-import { DataTable } from "@workspace/ui/components/data-table"
-import { Input } from "@workspace/ui/components/input"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select"
+  type Dispatch,
+  type SetStateAction,
+  useDeferredValue,
+  useMemo,
+  useState,
+} from "react"
+
+import { Button } from "@workspace/ui/components/button"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card"
+import { DataTable } from "@workspace/ui/components/data-table"
 import { dataTableDemoRows } from "@/features/admin/model/data-table-demo-data"
 
-const statusOptions = ["all", "Done", "In Process"] as const
+const statusOptions = ["Done", "In Process"] as const
 const typeOptions = [
-  "all",
   "Checklist",
   "Narrative",
   "Access Matrix",
@@ -28,54 +29,92 @@ const typeOptions = [
   "Runbook",
 ] as const
 const reviewerOptions = [
-  "all",
   "Anita Chen",
   "Marcus Li",
   "Leo Park",
   "Assign reviewer",
 ] as const
 
+function FilterTagGroup({
+  label,
+  options,
+  selectedValues,
+  onToggle,
+}: {
+  label: string
+  options: readonly string[]
+  selectedValues: string[]
+  onToggle: (value: string) => void
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="text-xs font-medium tracking-[0.16em] text-muted-foreground uppercase">
+        {label}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {options.map((option) => {
+          const isSelected = selectedValues.includes(option)
+
+          return (
+            <Button
+              key={option}
+              type="button"
+              size="xs"
+              variant={isSelected ? "default" : "outline"}
+              className="cursor-pointer rounded-full"
+              onClick={() => onToggle(option)}
+            >
+              {option}
+            </Button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export function DataTableDemoPage() {
-  const [keyword, setKeyword] = useState("")
-  const [status, setStatus] = useState<(typeof statusOptions)[number]>("all")
-  const [type, setType] = useState<(typeof typeOptions)[number]>("all")
-  const [reviewer, setReviewer] =
-    useState<(typeof reviewerOptions)[number]>("all")
-  const deferredKeyword = useDeferredValue(keyword)
-  const deferredStatus = useDeferredValue(status)
-  const deferredType = useDeferredValue(type)
-  const deferredReviewer = useDeferredValue(reviewer)
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([])
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+  const [selectedReviewers, setSelectedReviewers] = useState<string[]>([])
+  const deferredStatuses = useDeferredValue(selectedStatuses)
+  const deferredTypes = useDeferredValue(selectedTypes)
+  const deferredReviewers = useDeferredValue(selectedReviewers)
   const isFiltering =
-    keyword !== deferredKeyword ||
-    status !== deferredStatus ||
-    type !== deferredType ||
-    reviewer !== deferredReviewer
+    selectedStatuses !== deferredStatuses ||
+    selectedTypes !== deferredTypes ||
+    selectedReviewers !== deferredReviewers
+
+  const toggleValue = (
+    value: string,
+    setValue: Dispatch<SetStateAction<string[]>>
+  ) => {
+    setValue((current) =>
+      current.includes(value)
+        ? current.filter((item) => item !== value)
+        : [...current, value]
+    )
+  }
 
   const filteredRows = useMemo(() => {
-    const normalizedKeyword = deferredKeyword.trim().toLowerCase()
-
     return dataTableDemoRows.filter((row) => {
-      const matchesKeyword =
-        normalizedKeyword.length === 0 ||
-        [row.header, row.type, row.status, row.reviewer]
-          .join(" ")
-          .toLowerCase()
-          .includes(normalizedKeyword)
       const matchesStatus =
-        deferredStatus === "all" || row.status === deferredStatus
-      const matchesType = deferredType === "all" || row.type === deferredType
+        deferredStatuses.length === 0 || deferredStatuses.includes(row.status)
+      const matchesType =
+        deferredTypes.length === 0 || deferredTypes.includes(row.type)
       const matchesReviewer =
-        deferredReviewer === "all" || row.reviewer === deferredReviewer
+        deferredReviewers.length === 0 ||
+        deferredReviewers.includes(row.reviewer)
 
-      return matchesKeyword && matchesStatus && matchesType && matchesReviewer
+      return matchesStatus && matchesType && matchesReviewer
     })
-  }, [deferredKeyword, deferredReviewer, deferredStatus, deferredType])
+  }, [deferredReviewers, deferredStatuses, deferredTypes])
 
   return (
     <div className="flex flex-col gap-6">
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold tracking-tight">Data Table</h1>
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           Explore filtering, row actions, and table interactions in one place.
         </p>
       </div>
@@ -85,77 +124,40 @@ export function DataTableDemoPage() {
           data={filteredRows}
           isLoading={isFiltering}
           toolbarContent={
-            <>
-              <Input
-                value={keyword}
-                onChange={(event) => setKeyword(event.target.value)}
-                placeholder="Search header, type, status, reviewer..."
-                className="w-full min-w-[16rem] md:w-[20rem]"
-              />
-              <Select
-                value={status}
-                onValueChange={(value) =>
-                  setStatus(value as (typeof statusOptions)[number])
-                }
-              >
-                <SelectTrigger className="w-full md:w-[10rem]" size="sm">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  {statusOptions.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item === "all" ? "All status" : item}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-                value={type}
-                onValueChange={(value) =>
-                  setType(value as (typeof typeOptions)[number])
-                }
-              >
-                <SelectTrigger className="w-full md:w-[11rem]" size="sm">
-                  <SelectValue placeholder="Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {typeOptions.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item === "all" ? "All types" : item}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-                value={reviewer}
-                onValueChange={(value) =>
-                  setReviewer(value as (typeof reviewerOptions)[number])
-                }
-              >
-                <SelectTrigger className="w-full md:w-[12rem]" size="sm">
-                  <SelectValue placeholder="Reviewer" />
-                </SelectTrigger>
-                <SelectContent>
-                  {reviewerOptions.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item === "all" ? "All reviewers" : item}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setKeyword("")
-                  setStatus("all")
-                  setType("all")
-                  setReviewer("all")
-                }}
-              >
-                Reset filters
-              </Button>
-            </>
+            <div className="w-full">
+              <div className="flex w-full flex-col gap-4 rounded-3xl border bg-muted/30 p-4">
+                <FilterTagGroup
+                  label="Status"
+                  options={statusOptions}
+                  selectedValues={selectedStatuses}
+                  onToggle={(value) => toggleValue(value, setSelectedStatuses)}
+                />
+                <FilterTagGroup
+                  label="Type"
+                  options={typeOptions}
+                  selectedValues={selectedTypes}
+                  onToggle={(value) => toggleValue(value, setSelectedTypes)}
+                />
+                <FilterTagGroup
+                  label="Reviewer"
+                  options={reviewerOptions}
+                  selectedValues={selectedReviewers}
+                  onToggle={(value) => toggleValue(value, setSelectedReviewers)}
+                />
+                <div className="flex justify-end pt-2">
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setSelectedStatuses([])
+                      setSelectedTypes([])
+                      setSelectedReviewers([])
+                    }}
+                  >
+                    Reset filters
+                  </Button>
+                </div>
+              </div>
+            </div>
           }
         />
       </Card>

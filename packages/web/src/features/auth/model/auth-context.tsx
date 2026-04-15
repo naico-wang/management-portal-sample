@@ -40,7 +40,9 @@ function readStoredUser(): AuthUser | null {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = React.useState<AuthUser | null>(() => readStoredUser())
+  const [user, setUser] = React.useState<AuthUser | null>(() =>
+    readStoredUser()
+  )
 
   const login = React.useCallback((email: string) => {
     const nextUser: AuthUser = {

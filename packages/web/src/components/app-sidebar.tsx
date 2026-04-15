@@ -52,8 +52,8 @@ export function AppSidebar() {
         <SidebarMenu>
           {sidebarSections.map((section) => {
             const Icon = section.icon
-            const isSectionActive = section.items.some(
-              (item) => isPathActive(location.pathname, item.path)
+            const isSectionActive = section.items.some((item) =>
+              isPathActive(location.pathname, item.path)
             )
 
             return (
@@ -74,7 +74,10 @@ export function AppSidebar() {
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       {section.items.map((item) => {
-                        const isActive = isPathActive(location.pathname, item.path)
+                        const isActive = isPathActive(
+                          location.pathname,
+                          item.path
+                        )
 
                         return (
                           <SidebarMenuSubItem key={item.path}>

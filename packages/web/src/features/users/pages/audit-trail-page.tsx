@@ -24,7 +24,7 @@ export function AuditTrailPage() {
       <CardContent className="space-y-3">
         {events.map(([time, event]) => (
           <div key={time} className="rounded-3xl border p-4">
-            <p className="text-muted-foreground text-xs">{time}</p>
+            <p className="text-xs text-muted-foreground">{time}</p>
             <p className="mt-1 text-sm font-medium">{event}</p>
           </div>
         ))}

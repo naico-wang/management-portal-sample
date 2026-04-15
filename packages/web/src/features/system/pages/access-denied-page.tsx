@@ -13,7 +13,7 @@ import { routeConfig } from "@/router/route-config"
 
 export function AccessDeniedPage() {
   return (
-    <main className="bg-muted/30 flex min-h-svh items-center justify-center p-6">
+    <main className="flex min-h-svh items-center justify-center bg-muted/30 p-6">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Access denied</CardTitle>

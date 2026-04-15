@@ -27,9 +27,9 @@ export function RolesPage() {
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="font-medium">{name}</p>
-                <p className="text-muted-foreground text-sm">{description}</p>
+                <p className="text-sm text-muted-foreground">{description}</p>
               </div>
-              <span className="bg-muted rounded-full px-3 py-1 text-xs font-medium">
+              <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium">
                 {count}
               </span>
             </div>

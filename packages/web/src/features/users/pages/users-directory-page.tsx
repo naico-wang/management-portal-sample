@@ -29,9 +29,9 @@ export function UsersDirectoryPage() {
           >
             <div>
               <p className="font-medium">{name}</p>
-              <p className="text-muted-foreground text-sm">{role}</p>
+              <p className="text-sm text-muted-foreground">{role}</p>
             </div>
-            <span className="bg-muted rounded-full px-3 py-1 text-xs font-medium">
+            <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium">
               {status}
             </span>
           </div>

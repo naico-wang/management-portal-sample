@@ -12,7 +12,9 @@ export function SettingsGeneralPage() {
     <Card>
       <CardHeader>
         <CardTitle>Workspace Preferences</CardTitle>
-        <CardDescription>Global configuration for the admin portal.</CardDescription>
+        <CardDescription>
+          Global configuration for the admin portal.
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
         <div className="flex items-center justify-between rounded-3xl border p-4">

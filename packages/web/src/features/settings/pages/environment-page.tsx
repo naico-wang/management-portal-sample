@@ -18,13 +18,13 @@ export function EnvironmentPage() {
       <CardContent className="grid gap-3 md:grid-cols-2">
         <div className="rounded-3xl border p-4">
           <p className="font-medium">Production</p>
-          <p className="text-muted-foreground mt-1 text-sm">
+          <p className="mt-1 text-sm text-muted-foreground">
             Connected to managed VPC and private services.
           </p>
         </div>
         <div className="rounded-3xl border p-4">
           <p className="font-medium">Staging</p>
-          <p className="text-muted-foreground mt-1 text-sm">
+          <p className="mt-1 text-sm text-muted-foreground">
             Mirrors production integrations with sandbox credentials.
           </p>
         </div>

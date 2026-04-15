@@ -18,11 +18,11 @@ export function LimitsPage() {
       <CardContent className="space-y-3">
         <div className="flex items-center justify-between rounded-3xl border p-4">
           <span className="font-medium">Bulk export rows</span>
-          <span className="text-muted-foreground text-sm">50,000</span>
+          <span className="text-sm text-muted-foreground">50,000</span>
         </div>
         <div className="flex items-center justify-between rounded-3xl border p-4">
           <span className="font-medium">Concurrent background jobs</span>
-          <span className="text-muted-foreground text-sm">12</span>
+          <span className="text-sm text-muted-foreground">12</span>
         </div>
       </CardContent>
     </Card>

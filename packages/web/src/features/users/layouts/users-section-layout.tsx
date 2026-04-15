@@ -21,7 +21,7 @@ export function UsersSectionLayout() {
               cn(
                 "rounded-full border px-4 py-2 text-sm transition-colors",
                 isActive
-                  ? "bg-primary text-primary-foreground border-primary"
+                  ? "border-primary bg-primary text-primary-foreground"
                   : "bg-background hover:bg-muted"
               )
             }

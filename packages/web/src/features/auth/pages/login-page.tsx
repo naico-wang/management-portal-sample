@@ -20,13 +20,7 @@ export function LoginPage() {
 
   return (
     <LoginForm
-      onGoogleLogin={() => {
-        login("admin@management-portal.local")
-        startTransition(() => {
-          navigate(routeConfig.dashboard.path, { replace: true })
-        })
-      }}
-      onLogin={() => {
+      onSsoLogin={() => {
         login("admin@management-portal.local")
         startTransition(() => {
           navigate(redirectTo, { replace: true })

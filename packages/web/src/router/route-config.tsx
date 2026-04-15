@@ -1,9 +1,5 @@
 import type { LucideIcon } from "lucide-react"
-import {
-  BarChart3Icon,
-  Settings2Icon,
-  UsersIcon,
-} from "lucide-react"
+import { BarChart3Icon, Settings2Icon, UsersIcon } from "lucide-react"
 
 import {
   APP_PERMISSIONS,
@@ -80,7 +76,10 @@ export const routeConfig = {
   dashboard: RouteMeta
   dataTable: RouteMeta
   users: Record<"directory" | "roles" | "auditTrail", RouteMeta>
-  settings: Record<"general" | "environment" | "notifications" | "limits", RouteMeta>
+  settings: Record<
+    "general" | "environment" | "notifications" | "limits",
+    RouteMeta
+  >
 }
 
 export type SidebarSection = {
@@ -119,17 +118,17 @@ export const sidebarSections: SidebarSection[] = [
 export const sidebarTeams = [
   {
     name: "Lululemon Ops",
-    logo: <img src="/logo.svg" alt="Lululemon Ops" className="size-5" />,
+    logo: <img src="/logo.svg" alt="Lululemon Ops" className="size-8" />,
     plan: "Enterprise",
   },
   {
     name: "Regional Admin",
-    logo: <img src="/logo.svg" alt="Regional Admin" className="size-5" />,
+    logo: <img src="/logo.svg" alt="Regional Admin" className="size-8" />,
     plan: "Business",
   },
   {
     name: "Platform Team",
-    logo: <img src="/logo.svg" alt="Platform Team" className="size-5" />,
+    logo: <img src="/logo.svg" alt="Platform Team" className="size-8" />,
     plan: "Internal",
   },
 ] as const

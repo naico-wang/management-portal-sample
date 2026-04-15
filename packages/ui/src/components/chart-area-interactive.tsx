@@ -80,7 +80,9 @@ export function ChartAreaInteractive({
   rangeOptions?: ChartAreaRangeOption[]
 }) {
   const isMobile = useIsMobile()
-  const [timeRange, setTimeRange] = React.useState(rangeOptions[0]?.value ?? "90d")
+  const [timeRange, setTimeRange] = React.useState(
+    rangeOptions[0]?.value ?? "90d"
+  )
 
   React.useEffect(() => {
     if (isMobile) {

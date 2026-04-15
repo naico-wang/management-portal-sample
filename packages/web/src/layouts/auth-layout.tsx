@@ -1,22 +1,23 @@
 import { Outlet } from "react-router-dom"
 
+import { Card, CardContent } from "@workspace/ui/components/card"
+
 function LoginAside() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 text-center">
       <img
         src="/logo.svg"
         alt="Management Portal"
-        className="h-[90px] w-[90px]"
+        className="mx-auto h-[90px] w-[90px]"
       />
-      <p className="text-muted-foreground text-sm font-medium uppercase tracking-[0.2em]">
+      <p className="text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase">
         Management Portal
       </p>
       <h1 className="text-4xl font-semibold tracking-tight text-balance">
         Product Operation Portal
       </h1>
-      <p className="text-muted-foreground text-sm leading-6">
-        Sign in to manage users, review operational data, and keep your
-        configuration aligned across teams and environments.
+      <p className="text-sm leading-6 text-muted-foreground">
+        Product Operation Portal Description
       </p>
     </div>
   )
@@ -24,17 +25,19 @@ function LoginAside() {
 
 export function AuthLayout() {
   return (
-    <main className="grid min-h-svh lg:grid-cols-2">
-      <section className="bg-background flex items-center p-6 md:p-10">
-        <div className="mx-auto w-full max-w-md">
-          <LoginAside />
-        </div>
-      </section>
-      <section className="bg-muted flex items-center justify-center p-6 md:p-10">
-        <div className="w-full max-w-sm">
-          <Outlet />
-        </div>
-      </section>
+    <main className="min-h-svh bg-background">
+      <div className="mx-auto flex min-h-svh w-full max-w-xl items-center p-6 md:p-10">
+        <Card className="w-full">
+          <CardContent className="flex flex-col items-center gap-10 pt-6 text-center">
+            <section className="flex items-center justify-center">
+              <LoginAside />
+            </section>
+            <section className="w-full">
+              <Outlet />
+            </section>
+          </CardContent>
+        </Card>
+      </div>
     </main>
   )
 }
